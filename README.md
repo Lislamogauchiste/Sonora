@@ -23,3 +23,12 @@ Il s'agit d'une application front-end locale : il n'y a pas encore de comptes ut
 Dans SONORA, clique sur **Importer une playlist** et sélectionne un export de playlist au format CSV, JSON ou M3U/M3U8. Ces formats peuvent être générés par des outils de transfert/export de playlists (par exemple Soundiiz ou TuneMyMusic), ou par certains services musicaux.
 L'import récupère les métadonnées (titre, artiste, album) et crée une playlist SONORA. Les morceaux déjà présents dans la bibliothèque locale sont associés automatiquement. Pour écouter les autres, il faut ajouter les fichiers audio correspondants que tu possèdes ou que tu es autorisé à utiliser.
 SONORA ne se connecte pas directement aux comptes Spotify, Deezer ou Apple Music et ne copie pas les flux audio protégés par DRM. L'import de playlist ne transfère donc pas les abonnements ni les fichiers audio des services d'origine.
+
+
+## Recherche et import depuis des plateformes musicales
+- Recherche de titres dans les catalogues Apple/iTunes et Deezer depuis le bloc « Explorer la musique en ligne ».
+- Ajout des références trouvées à la playlist locale « Titres repérés en ligne » et ouverture de la fiche sur la plateforme d'origine.
+- Aperçus audio Deezer de courte durée lorsqu'ils sont fournis par le catalogue.
+- Import d'une playlist Deezer publique en collant son URL.
+- Pour Spotify et Apple Music, utiliser un export CSV, JSON ou M3U depuis un outil de transfert compatible puis l'importer dans SONORA. L'import par URL et la copie de flux audio protégés ne sont pas pris en charge.
+- La recherche Deezer utilise un service proxy public pour contourner la restriction CORS de son API ; sa disponibilité dépend de ce service tiers.
