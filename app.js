@@ -104,4 +104,76 @@
   document.querySelectorAll(".quick-card[data-view]").forEach(b=>b.onclick=()=>document.querySelector('.nav-item[data-view="'+b.dataset.view+'"]').click());
   $("playlistNav").onclick=e=>{const b=e.target.closest("[data-playlist]");if(!b)return;const p=playlists.find(x=>x.id===b.dataset.playlist);if(!p)return;const entry=(p.entries||[]).find(x=>x.localTrackId&&tracks.some(t=>t.id===x.localTrackId));const item=entry?tracks.find(t=>t.id===entry.localTrackId):tracks.find(t=>p.trackIds.includes(t.id));if(item)play(item.id);else if((p.entries||[]).length)toast("Playlist importée : ajoute les fichiers audio correspondants pour les écouter.");else toast("Cette playlist est encore vide.")};
   (async()=>{try{db=await openDB();tracks=await getAll();readPlaylists();render()}catch(e){console.error(e);toast("Le stockage local n'est pas disponible dans ce navigateur.")}})();
+
+  // Recherche dans les catalogues publics Apple/iTunes et Deezer.
+  const catalogResults = $("catalogResults");
+  const searchCatalogs = async () => {
+    const query = $("catalogSearch").value.trim();
+    const source = $("catalogSource").value;
+    if (query.length < 2) { catalogResults.innerHTML = '<p class="muted small">Saisis au moins deux caractères pour lancer une recherche.</p>'; return; }
+    catalogResults.innerHTML = '<p class="muted small">Recherche en cours…</p>';
+    const jobs = [];
+    if (source === "all" || source === "apple") {
+      const url = "https://itunes.apple.com/search?term=" + encodeURIComponent(query) + "&country=fr&entity=song&limit=8";
+      jobs.push(fetch(url).then(r => { if(!r.ok) throw new Error("Apple indisponible"); return r.json(); }).then(data => (data.results||[]).map(t => ({
+        source:"Apple / iTunes", title:t.trackName, artist:t.artistName, album:t.collectionName||"", art:t.artworkUrl100||"", url:t.trackViewUrl||t.collectionViewUrl||"https://music.apple.com/fr/search?term="+encodeURIComponent(query), preview:""
+      }))));
+    }
+    if (source === "all" || source === "deezer") {
+      const url = "https://proxy.cors.dev/https://api.deezer.com/search?q=" + encodeURIComponent(query) + "&limit=8";
+      jobs.push(fetch(url).then(r => { if(!r.ok) throw new Error("Deezer indisponible"); return r.json(); }).then(data => {
+        if(data.error) throw new Error(data.error.message||"Erreur Deezer");
+        return (data.data||[]).map(t => ({source:"Deezer",title:t.title,artist:t.artist?.name||"",album:t.album?.title||"",art:t.album?.cover_medium||"",url:t.link||"https://www.deezer.com/search/"+encodeURIComponent(query),preview:t.preview||""}));
+      }));
+    }
+    const settled = await Promise.allSettled(jobs);
+    const results = settled.flatMap(x => x.status==="fulfilled" ? x.value : []);
+    const errors = settled.filter(x=>x.status==="rejected");
+    if (!results.length) {
+      catalogResults.innerHTML = '<p class="muted small">Aucun résultat disponible. Vérifie ta connexion ou réessaie plus tard.'+(errors.length?' Un catalogue n’a pas répondu.':'')+'</p>';
+      return;
+    }
+    catalogResults.innerHTML = results.map((t,i) => '<article class="catalog-result"><img src="'+esc(t.art||"")+'" alt="" onerror="this.style.visibility=\'hidden\'"><div class="catalog-result-info"><strong>'+esc(t.title)+'</strong><span>'+esc(t.artist)+' · '+esc(t.album||"Album non renseigné")+' · '+esc(t.source)+'</span></div><div class="catalog-result-actions">'+(t.preview?'<button data-preview="'+i+'">▶ Aperçu</button>':'')+'<button data-save-online="'+i+'">＋ Playlist SONORA</button><a href="'+esc(t.url)+'" target="_blank" rel="noopener">Ouvrir</a></div></article>').join("");
+    catalogResults._items = results;
+    if(errors.length) toast("Certains catalogues n’ont pas répondu ; résultats partiels affichés.");
+  };
+  $("catalogSearchBtn").onclick = searchCatalogs;
+  $("catalogSearch").addEventListener("keydown",e=>{if(e.key==="Enter")searchCatalogs()});
+  $("catalogSource").onchange = ()=>{if($("catalogSearch").value.trim().length>=2)searchCatalogs()};
+  let catalogTimer;
+  $("catalogSearch").addEventListener("input",()=>{clearTimeout(catalogTimer);catalogTimer=setTimeout(searchCatalogs,650)});
+  catalogResults.onclick = e => {
+    const preview=e.target.closest("[data-preview]"), save=e.target.closest("[data-save-online]");
+    const items=catalogResults._items||[];
+    if(preview){const t=items[Number(preview.dataset.preview)];if(t?.preview){audio.src=t.preview;currentId=null;$("nowTitle").textContent=t.title;$("nowArtist").textContent=t.artist+" · aperçu Deezer";audio.play().catch(()=>toast("Aperçu indisponible."));}}
+    if(save){
+      const t=items[Number(save.dataset.saveOnline)];if(!t)return;
+      let p=playlists.find(x=>x.name==="Titres repérés en ligne");
+      if(!p){p={id:crypto.randomUUID(),name:"Titres repérés en ligne",trackIds:[],entries:[],importedFrom:"catalogues"};playlists.push(p);}
+      p.entries=p.entries||[];
+      if(!p.entries.some(x=>norm(x.title)===norm(t.title)&&norm(x.artist)===norm(t.artist))){
+        p.entries.push({title:t.title,artist:t.artist,album:t.album,source:t.source,url:t.url,preview:t.preview||"",localTrackId:null});
+        savePlaylists();render();toast("Référence ajoutée à « Titres repérés en ligne ».");
+      } else toast("Ce titre est déjà dans la playlist.");
+    }
+  };
+  $("importUrlBtn").onclick = async () => {
+    const value=$("playlistUrl").value.trim();
+    const match=value.match(/deezer\.com\/(?:[a-z]{2}\/)?playlist\/(\d+)/i);
+    if(!match){toast("Pour Spotify ou Apple Music, importe un export CSV, JSON ou M3U. Le lien direct pris en charge ici est Deezer.");return;}
+    const btn=$("importUrlBtn");btn.disabled=true;btn.textContent="Import…";
+    try{
+      const response=await fetch("https://proxy.cors.dev/https://api.deezer.com/playlist/"+match[1]);
+      if(!response.ok)throw new Error("Réponse réseau invalide");
+      const data=await response.json();if(data.error)throw new Error(data.error.message||"Playlist inaccessible");
+      const entries=(data.tracks?.data||[]).map(t=>({title:t.title,artist:t.artist?.name||"",album:t.album?.title||"",source:"Deezer",url:t.link||"",preview:t.preview||"",localTrackId:null})).filter(t=>t.title);
+      if(!entries.length)throw new Error("Aucun titre public trouvé");
+      const name=(data.title||"Playlist Deezer").trim();
+      playlists.push({id:crypto.randomUUID(),name,trackIds:[],entries,importedFrom:"Deezer"});
+      savePlaylists();render();$("playlistUrl").value="";
+      toast("Playlist Deezer importée : "+entries.length+" titres (métadonnées uniquement).");
+    }catch(err){console.error(err);toast("Import Deezer impossible : playlist privée, lien invalide ou service temporairement indisponible.");}
+    finally{btn.disabled=false;btn.textContent="Importer le lien";}
+  };
+
 })();
