@@ -65,12 +65,12 @@
         const data=JSON.parse(text);
         let list=Array.isArray(data)?data:(data.tracks?.items||data.tracks||data.items||data.songs||data.playlist?.tracks||[]);
         if(!Array.isArray(list))list=Object.values(list);
-        entries=list.map(x=>typeof x==="string"?{title:x}:{title:pick(x,["track name","title","name","song","track"]),artist:pick(x,["artist name","artist","artists","album artist"]),album:pick(x,["album name","album"])}).filter(x=>String(x.title||"").trim());
+        entries=list.map(x=>{if(typeof x==="string")return {title:x};const t=x.track||x;const artists=Array.isArray(t.artists)?t.artists.map(a=>a.name||a).join(", "):"";return {title:pick(t,["track name","song name","title","name","song","track"])||t.name||"",artist:pick(t,["artist name","artist names","artist","artists","album artist"])||artists,album:pick(t,["album name","album","album title"])||(t.album?.name||"")}}).filter(x=>String(x.title||"").trim());
       } else {
         const rows=parseCSV(text);if(rows.length<2)throw new Error("CSV vide");
-        const headers=rows[0].map(norm), ti=headers.findIndex(x=>["track name","title","name","song","track"].includes(x));
+        const headers=rows[0].map(norm), ti=headers.findIndex(x=>["track name","song name","title","name","song","track"].includes(x));
         if(ti<0)throw new Error("Colonne titre absente");
-        const ai=headers.findIndex(x=>["artist name","artist","artists","album artist"].includes(x)), bi=headers.findIndex(x=>["album name","album"].includes(x));
+        const ai=headers.findIndex(x=>["artist name","artist names","artist","artists","album artist"].includes(x)), bi=headers.findIndex(x=>["album name","album title","album"].includes(x));
         entries=rows.slice(1).map(r=>({title:r[ti]||"",artist:ai>=0?r[ai]||"": "",album:bi>=0?r[bi]||"":""})).filter(x=>x.title.trim());
       }
       if(!entries.length){toast("Aucun morceau reconnu dans ce fichier.");return}
