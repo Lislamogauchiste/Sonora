@@ -63,6 +63,7 @@
   $("progress").oninput=e=>{if(audio.duration)audio.currentTime=Number(e.target.value)/100*audio.duration};
   $("volume").oninput=e=>audio.volume=Number(e.target.value);audio.volume=.8;
   document.querySelectorAll(".nav-item").forEach(b=>b.onclick=()=>{document.querySelectorAll(".nav-item").forEach(x=>x.classList.remove("active"));b.classList.add("active");activeView=b.dataset.view;$("crumb").textContent=b.textContent.trim().toUpperCase();$("viewTitle").textContent=activeView==="library"?"Tous les morceaux":activeView==="playlists"?"Tes playlists":"Écoutés récemment";});
+  document.querySelectorAll(".quick-card[data-view]").forEach(b=>b.onclick=()=>document.querySelector('.nav-item[data-view="'+b.dataset.view+'"]').click());
   $("playlistNav").onclick=e=>{const b=e.target.closest("[data-playlist]");if(!b)return;const p=playlists.find(x=>x.id===b.dataset.playlist);if(!p)return;const item=tracks.find(t=>p.trackIds.includes(t.id));if(item)play(item.id);else toast("Cette playlist est encore vide.")};
   (async()=>{try{db=await openDB();tracks=await getAll();readPlaylists();render()}catch(e){console.error(e);toast("Le stockage local n'est pas disponible dans ce navigateur.")}})();
 })();
