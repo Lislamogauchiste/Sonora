@@ -1,57 +1,58 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101014">
-  <title>SONORA — Ta musique, ton espace</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#121212">
+<title>SONORA — Musique pour tous les moments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <a class="brand" href="#" aria-label="SONORA accueil"><span class="brand-mark">S</span><span>SONORA</span></a>
-      <div class="side-label">ESPACE MUSICAL</div>
-      <nav class="nav">
-        <button class="nav-item active" data-view="home"><span>⌂</span> Accueil</button>
-        <button class="nav-item" data-view="library"><span>▤</span> Ma bibliothèque</button>
-        <button class="nav-item" data-view="playlists"><span>☷</span> Playlists</button>
-      </nav>
-      <div class="side-label playlist-label">TES PLAYLISTS <button id="newPlaylist" title="Créer une playlist">＋</button></div>
-      <div id="playlistNav" class="playlist-nav"><p class="muted small">Aucune playlist pour le moment.</p></div>
-      <div class="sidebar-bottom"><div class="storage-icon">♫</div><div><strong>Ta musique reste à toi</strong><p>Les fichiers sont stockés dans ce navigateur.</p></div></div>
-    </aside>
-
-    <main class="main">
-      <header class="topbar">
-        <div class="breadcrumbs">TON ESPACE <span>/</span> <strong id="crumb">ACCUEIL</strong></div>
-        <div class="top-actions"><span class="local-pill"><i></i> Bibliothèque locale</span><button class="avatar" title="Profil local">S</button></div>
-      </header>
-      <section class="content">
-        <div class="hero">
-          <div class="hero-copy"><p class="eyebrow">TON UNIVERS, TON RYTHME</p><h1>La musique<br>à portée de <em>main.</em></h1><p class="hero-sub">Importe tes morceaux, compose tes playlists et retrouve toute ta collection au même endroit.</p><button class="primary-btn" id="heroImport">＋ &nbsp; Importer ma musique</button></div>
-          <div class="hero-art" aria-hidden="true"><div class="disc disc-one"></div><div class="disc disc-two"></div><div class="sound-bars"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div><span class="art-note">♪</span></div>
-        </div>
-        <div class="stats-row"><div class="stat"><span>MORCEAUX</span><strong id="trackCount">0</strong></div><div class="stat"><span>PLAYLISTS</span><strong id="playlistCount">0</strong></div><div class="stat"><span>DURÉE TOTALE</span><strong id="totalDuration">0 min</strong></div></div>
-        <div class="section-heading"><div><p class="eyebrow">TA COLLECTION</p><h2 id="viewTitle">Écoutés récemment</h2></div><div class="library-actions"><label class="search-box">⌕ <input id="search" type="search" placeholder="Rechercher un titre, un artiste…"></label><button class="secondary-btn" id="importBtn">＋ Importer</button></div></div>
-        <div id="trackArea">
-          <div class="empty-state" id="emptyState"><div class="empty-icon">♫</div><h3>Ta bibliothèque commence ici</h3><p>Ajoute tes fichiers audio pour les retrouver et les écouter dans SONORA.</p><button class="primary-btn" id="emptyImport">Importer des fichiers</button><span class="format-note">MP3 · WAV · FLAC · M4A · OGG · AAC</span></div>
-          <div class="track-table-wrap" id="trackTableWrap" hidden><table class="track-table"><thead><tr><th>#</th><th>TITRE</th><th>ALBUM</th><th>AJOUTÉ</th><th> </th></tr></thead><tbody id="trackRows"></tbody></table></div>
-        </div>
-      </section>
-    </main>
-  </div>
-  <footer class="player">
-    <div class="now-playing"><div class="cover" id="playerCover">♫</div><div class="now-text"><strong id="nowTitle">Aucun morceau sélectionné</strong><span id="nowArtist">Importe ta musique pour commencer</span></div></div>
-    <div class="player-center"><div class="controls"><button id="shuffleBtn" title="Aléatoire">⤨</button><button id="prevBtn" title="Précédent">Ⅱ◀</button><button class="play-btn" id="playBtn" title="Lecture">▶</button><button id="nextBtn" title="Suivant">▶Ⅱ</button><button id="repeatBtn" title="Répéter">↻</button></div><div class="timeline"><span id="currentTime">0:00</span><input id="progress" type="range" min="0" max="100" value="0"><span id="duration">0:00</span></div></div>
-    <div class="player-right"><span>VOLUME</span><input id="volume" type="range" min="0" max="1" step="0.01" value="0.8"></div>
-  </footer>
-  <input id="fileInput" type="file" accept="audio/*,.flac,.wav,.mp3,.m4a,.ogg" multiple hidden>
-  <audio id="audio"></audio>
-  <div class="toast" id="toast" role="status"></div>
-  <script src="app.js"></script>
-</body>
-</html>
+<div class="app-shell">
+<aside class="sidebar">
+  <a class="brand" href="#" aria-label="SONORA accueil"><span class="brand-mark">♫</span><span>SONORA</span></a>
+  <nav class="main-nav">
+    <button class="nav-item active" data-view="home"><span class="nav-icon">⌂</span>Accueil</button>
+    <button class="nav-item" data-view="library"><span class="nav-icon">⌕</span>Rechercher</button>
+    <button class="nav-item" data-view="playlists"><span class="nav-icon">▤</span>Ma bibliothèque</button>
+  </nav>
+  <div class="library-head"><span>Ta bibliothèque</span><button id="newPlaylist" title="Créer une playlist">＋</button></div>
+  <div class="library-tools"><span>♫</span><span>Playlists et titres</span></div>
+  <div id="playlistNav" class="playlist-nav"><p class="muted small">Tes playlists apparaîtront ici.</p></div>
+  <div class="sidebar-bottom"><div class="storage-icon">✓</div><div><strong>Bibliothèque locale</strong><p>Tes fichiers restent sur cet appareil.</p></div></div>
+</aside>
+<main class="main">
+  <header class="topbar">
+    <div class="history-buttons"><button aria-label="Précédent">‹</button><button aria-label="Suivant">›</button></div>
+    <label class="search-box"><span>⌕</span><input id="search" type="search" placeholder="Que souhaites-tu écouter ?"></label>
+    <div class="top-actions"><button class="upgrade-btn" id="importBtn">Importer des titres</button><button class="avatar" title="Profil">S</button></div>
+  </header>
+  <section class="content">
+    <section class="welcome">
+      <p class="eyebrow">TON ESPACE MUSICAL</p>
+      <h1>Bonjour, bienvenue sur SONORA.</h1>
+      <p>Retrouve tes morceaux préférés et lance ta prochaine écoute.</p>
+    </section>
+    <section class="quick-grid" aria-label="Accès rapides">
+      <button class="quick-card quick-feature" id="heroImport"><span class="quick-art art-purple">♫</span><strong>Ta musique</strong><span class="quick-play">▶</span></button>
+      <button class="quick-card" data-view="library"><span class="quick-art art-blue">▤</span><strong>Tous tes titres</strong><span class="quick-play">▶</span></button>
+      <button class="quick-card" data-view="playlists"><span class="quick-art art-orange">☷</span><strong>Tes playlists</strong><span class="quick-play">▶</span></button>
+    </section>
+    <section class="section-block">
+      <div class="section-heading"><div><p class="eyebrow">TA COLLECTION</p><h2 id="viewTitle">Écoutés récemment</h2></div><div class="collection-stats"><span><b id="trackCount">0</b> titres</span><span><b id="playlistCount">0</b> playlists</span><span><b id="totalDuration">0 min</b></span></div></div>
+      <div id="trackArea">
+        <div class="empty-state" id="emptyState"><div class="empty-icon">♫</div><h3>Ta bibliothèque est encore vide</h3><p>Importe tes fichiers audio pour commencer à écouter ta musique ici.</p><button class="primary-btn" id="emptyImport">＋ Importer des fichiers</button><span class="format-note">MP3 · WAV · FLAC · M4A · OGG · AAC</span></div>
+        <div class="track-table-wrap" id="trackTableWrap" hidden><table class="track-table"><thead><tr><th>#</th><th>TITRE</th><th>ALBUM</th><th>DATE D'AJOUT</th><th></th></tr></thead><tbody id="trackRows"></tbody></table></div>
+      </div>
+    </section>
+    <section class="bottom-prompt"><div><strong>Ajoute de nouveaux sons à ta collection</strong><span>Importe plusieurs fichiers audio en une seule fois.</span></div><button class="secondary-btn" id="bottomImport" onclick="document.getElementById('fileInput').click()">Choisir des fichiers</button></section>
+  </section>
+</main>
+</div>
+<footer class="player">
+  <div class="now-playing"><div class="cover" id="playerCover">♫</div><div class="now-text"><strong id="nowTitle">Aucun titre sélectionné</strong><span id="nowArtist">Choisis un morceau dans ta bibliothèque</span></div></div>
+  <div class="player-center"><div class="controls"><button id="shuffleBtn" title="Aléatoire">⤨</button><button id="prevBtn" title="Précédent">Ⅱ◀</button><button class="play-btn" id="playBtn" title="Lecture">▶</button><button id="nextBtn" title="Suivant">▶Ⅱ</button><button id="repeatBtn" title="Répéter">↻</button></div><div class="timeline"><span id="currentTime">0:00</span><input id="progress" type="range" min="0" max="100" value="0"><span id="duration">0:00</span></div></div>
+  <div class="player-right"><span>VOLUME</span><input id="volume" type="range" min="0" max="1" step="0.01" value="0.8"></div>
+</footer>
+<input id="fileInput" type="file" accept="audio/*,.flac,.wav,.mp3,.m4a,.ogg" multiple hidden><audio id="audio"></audio><div class="toast" id="toast" role="status"></div>
+<script src="app.js"></script>
+</body></html>
