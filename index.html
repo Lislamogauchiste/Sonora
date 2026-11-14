@@ -44,7 +44,7 @@
         <div class="track-table-wrap" id="trackTableWrap" hidden><table class="track-table"><thead><tr><th>#</th><th>TITRE</th><th>ALBUM</th><th>DATE D'AJOUT</th><th></th></tr></thead><tbody id="trackRows"></tbody></table></div>
       </div>
     </section>
-    <section class="bottom-prompt"><div><strong>Ajoute de nouveaux sons à ta collection</strong><span>Importe plusieurs fichiers audio en une seule fois.</span></div><button class="secondary-btn" id="bottomImport" onclick="document.getElementById('fileInput').click()">Choisir des fichiers</button></section>
+    <section class="bottom-prompt"><div><strong>Ajoute de nouveaux sons à ta collection</strong><span>Importe plusieurs fichiers audio en une seule fois.</span></div><div class="bottom-actions"><button class="secondary-btn" id="playlistImportBtn">Importer une playlist</button><button class="secondary-btn" id="bottomImport" onclick="document.getElementById('fileInput').click()">Importer des fichiers audio</button></div></section>
   </section>
 </main>
 </div>
@@ -53,6 +53,6 @@
   <div class="player-center"><div class="controls"><button id="shuffleBtn" title="Aléatoire">⤨</button><button id="prevBtn" title="Précédent">Ⅱ◀</button><button class="play-btn" id="playBtn" title="Lecture">▶</button><button id="nextBtn" title="Suivant">▶Ⅱ</button><button id="repeatBtn" title="Répéter">↻</button></div><div class="timeline"><span id="currentTime">0:00</span><input id="progress" type="range" min="0" max="100" value="0"><span id="duration">0:00</span></div></div>
   <div class="player-right"><span>VOLUME</span><input id="volume" type="range" min="0" max="1" step="0.01" value="0.8"></div>
 </footer>
-<input id="fileInput" type="file" accept="audio/*,.flac,.wav,.mp3,.m4a,.ogg" multiple hidden><audio id="audio"></audio><div class="toast" id="toast" role="status"></div>
+<input id="fileInput" type="file" accept="audio/*,.flac,.wav,.mp3,.m4a,.ogg" multiple hidden><input id="playlistFileInput" type="file" accept=".csv,.json,.m3u,.m3u8,.txt" hidden><audio id="audio"></audio><div class="toast" id="toast" role="status"></div>
 <script src="app.js"></script>
 </body></html>
