@@ -37,6 +37,23 @@
       <button class="quick-card" data-view="library"><span class="quick-art art-blue">▤</span><strong>Tous tes titres</strong><span class="quick-play">▶</span></button>
       <button class="quick-card" data-view="playlists"><span class="quick-art art-orange">☷</span><strong>Tes playlists</strong><span class="quick-play">▶</span></button>
     </section>
+
+    <section class="online-search">
+      <div class="section-heading"><div><p class="eyebrow">CATALOGUES MUSICAUX</p><h2>Explorer la musique en ligne</h2></div></div>
+      <div class="online-search-controls">
+        <input id="catalogSearch" type="search" placeholder="Rechercher un titre, un artiste, un album…">
+        <select id="catalogSource" aria-label="Plateforme musicale">
+          <option value="all">Toutes les plateformes</option><option value="apple">Apple / iTunes</option><option value="deezer">Deezer</option>
+        </select>
+        <button id="catalogSearchBtn" class="primary-btn">Rechercher</button>
+      </div>
+      <p class="format-note">Recherche dans les catalogues publics. Les résultats renvoient vers leur plateforme d'origine ; les titres ajoutés à SONORA sont des références de playlist, pas des fichiers audio.</p>
+      <div id="catalogResults" class="catalog-results" aria-live="polite"></div>
+      <div class="playlist-url-import">
+        <div><strong>Importer une playlist Deezer par lien</strong><span>Colle l’adresse publique d’une playlist Deezer.</span></div>
+        <div class="online-search-controls"><input id="playlistUrl" type="url" placeholder="https://www.deezer.com/playlist/…"><button id="importUrlBtn" class="secondary-btn">Importer le lien</button></div>
+      </div>
+    </section>
     <section class="section-block">
       <div class="section-heading"><div><p class="eyebrow">TA COLLECTION</p><h2 id="viewTitle">Écoutés récemment</h2></div><div class="collection-stats"><span><b id="trackCount">0</b> titres</span><span><b id="playlistCount">0</b> playlists</span><span><b id="totalDuration">0 min</b></span></div></div>
       <div id="trackArea">
